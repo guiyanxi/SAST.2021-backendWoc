@@ -1,26 +1,16 @@
-package com.zdy.yeb.controller;
+package com.example.woc.controller;
 
 
-import com.zdy.yeb.pojo.Menu;
-import com.zdy.yeb.service.IAdminService;
-import com.zdy.yeb.service.IMenuService;
+import com.example.woc.entity.Menu;
+import com.example.woc.service.IMenuService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author zhaody
- * @since 2021-04-19
- */
 @RestController
 @RequestMapping("/system/cfg")
 public class MenuController {

@@ -1,17 +1,9 @@
-package com.zdy.yeb.mapper;
+package com.example.woc.mapper;
 
-import com.zdy.yeb.pojo.MenuRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.woc.entity.MenuRole;
 import org.apache.ibatis.annotations.Param;
 
-/**
- * <p>
- *  Mapper 接口
- * </p>
- *
- * @author zhaody
- * @since 2021-04-19
- */
 public interface MenuRoleMapper extends BaseMapper<MenuRole> {
 
     /**

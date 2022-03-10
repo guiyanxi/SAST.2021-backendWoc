@@ -1,9 +1,7 @@
-package com.zdy.yeb.controller;
+package com.example.woc.controller;
 
-import com.zdy.yeb.pojo.Admin;
-import com.zdy.yeb.pojo.AdminLoginParam;
-import com.zdy.yeb.pojo.RespBean;
-import com.zdy.yeb.service.IAdminService;
+import com.example.woc.entity.Account;
+import com.example.woc.entity.AccountLogin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.woc.service.IUserService;
+import com.example.woc.model.RespBean;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-/*不是遥控器，是令牌
-* 登录令牌（@RequestBody       User user,Request request）
-*      返回service.login实现（User.user, User.password, User.验证码 ）
-* */
+
 
 //登录
 @RestController
@@ -25,27 +22,36 @@ import java.security.Principal;
 public class LoginController {
 
     @Autowired
-    private IAdminService adminService;
-    @ApiOperation("登录之后返回token") //swag注解代替注释
+    private IUserService userService;
+
+    @ApiOperation("角色注册") //swag注解代替注释
+    @PostMapping("/register")
+    public RespBean uploadUsername(@RequestBody Account account) {
+        return userService.register(account);
+    }
+
+    @ApiOperation("登录之后返回token")
     @PostMapping("/login")
-    public RespBean login(@RequestBody AdminLoginParam adminLoginParam, HttpServletRequest request) {
-        return adminService.login(adminLoginParam.getUsername(), adminLoginParam.getPassword(), adminLoginParam.getCaptcha(), request);
+    public RespBean login(@RequestBody AccountLogin accountLogin, HttpServletRequest request) {
+        return userService.login(accountLogin.getUsername()
+                , accountLogin.getPassword()
+                , request);
     }
 
     @ApiOperation("获取当前登录用户的信息")
-    @GetMapping("/admin/info")
-    public Admin getAdminInfo(Principal principal) {
+    @GetMapping("/account/info")
+    public Account getAdminInfo(Principal principal) {
         if (null == principal) {
             return null;
         }
         String username = principal.getName();
-        Admin admin = adminService.getAdminByUserName(username);
-        admin.setPassword(null);
-        admin.setRoles(adminService.getRoles(admin.getId()));
-        return admin;
+        Account account = userService.getAdminByUserName(username);
+        account.setPassword(null);
+        account.setRoles(userService.getRoles(account.getId()));
+        return account;
     }
 
-    /**返回成功即可，具体实现在前端进行，因为使用token，退出时在前端把tokenHead删除就行了
+    /**token，退出时前端tokenHead删除
      * @return
      */
     @ApiOperation("退出登录")

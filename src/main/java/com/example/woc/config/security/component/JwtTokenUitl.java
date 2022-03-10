@@ -1,4 +1,4 @@
-package com.example.woc.config.security;
+package com.example.woc.config.security.component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -24,7 +24,7 @@ public class JwtTokenUitl {
     @Value("${jwt.expiration}")
     private Long expiration; // 失效，超时时间
 
-    //根据用户信息生成Token
+    // 一，根据用户信息生成Token
     public String genegrateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
@@ -32,7 +32,7 @@ public class JwtTokenUitl {
         return generateToken(claims);
     }
 
-    //从token中获取登录用户名
+    //二，从token中获取登录用户名
     public String getUserNameFromToken(String token) {
         String username;
         try {
@@ -44,7 +44,7 @@ public class JwtTokenUitl {
         return username;
     }
 
-    //验证token是否有效
+    // 验证token是否有效
     public boolean ValidateToken(String token, UserDetails userDetails) {
         String username = getUserNameFromToken(token);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
@@ -73,6 +73,11 @@ public class JwtTokenUitl {
         Claims claims = getClaimsFromToken(token);
         return claims.getExpiration();
     }
+    //生成token失效时间
+    private Date generateExpiration() {
+        Date date = new Date(System.currentTimeMillis() + expiration * 1000);
+        return date;
+    }
     //从token中获取荷载
     private Claims getClaimsFromToken(String token) {
         Claims claims = null;
@@ -95,10 +100,6 @@ public class JwtTokenUitl {
                 .compact();
     }
 
-    //生成token失效时间
-    private Date generateExpiration() {
-        Date date = new Date(System.currentTimeMillis() + expiration * 1000);
-        return date;
-    }
+
 
 }

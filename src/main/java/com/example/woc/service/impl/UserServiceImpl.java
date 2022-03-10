@@ -1,11 +1,11 @@
 package com.example.woc.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.example.woc.config.security.component.JwtTokenUitl;
-import com.example.woc.entity.AccountLogin;
-import com.example.woc.mapper.AdminMapper;
+import com.example.woc.entity.Account;
 import com.example.woc.mapper.RoleMapper;
-import com.example.woc.service.IAdminService;
-import com.example.woc.entity.Admin;
+import com.example.woc.mapper.UserMapper;
+import com.example.woc.service.IUserService;
 import com.example.woc.entity.Role;
 import com.example.woc.model.RespBean;
 
@@ -28,10 +28,10 @@ import java.util.Map;
 // 服务实现
 
 @Service
-public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements IAdminService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, Account> implements IUserService {
 
     @Resource
-    private AdminMapper adminMapper;
+    private UserMapper userMapper;
     @Resource
     private UserDetailsService userDetailsService;
     @Resource
@@ -45,7 +45,33 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
 
     @Override
-    public RespBean register(AccountLogin accountLogin){
+    public RespBean register(Account account){
+        String username=account.getUsername();
+        String password = account.getPassword();
+        String email=account.getEmail();
+
+        //log.info("password{}", password);
+
+        if (StringUtils.isEmpty(username)) {
+            return RespBean.error("用户名不能为空");
+        }
+        if (StringUtils.isEmpty(password)) {
+            return RespBean.error("密码不能为空");
+        }
+
+        Account user2=userMapper.selectOne(new QueryWrapper<Account>().eq("username", username));
+        if (user2 != null) {
+            return RespBean.error("用户已存在~");
+        }
+        //int resultCount=userMapper.saveUser(username, passwordEncoder.encode(password),email);
+        Account account02=new Account();
+        account02.setUsername(username);
+        account02.setPassword(passwordEncoder.encode(password));
+        account02.setEmail(email);
+        int resultCount = userMapper.insert(account02);
+        if (resultCount== 0) {
+            return RespBean.error("注册失败");
+        }
         return RespBean.success("注册成功");
     }
 
@@ -80,9 +106,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
      * @return
      */
     @Override
-    public Admin getAdminByUserName(String username) {
-        return adminMapper.selectOne(new QueryWrapper<Admin>().eq("username", username)
-                .eq("enabled", true));
+    public Account getAdminByUserName(String username) {
+        return userMapper.selectOne(new QueryWrapper<Account>().eq("username", username));
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.zdy.yeb.config.security.component;
+package com.example.woc.config.security.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,12 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * JWT 登录授权过滤器
- *
- * @author 赵德胤
- * @create 2021-04-21-23:33
- **/
+//JWT 登录授权过滤器
 public class JwtAuthencationTokenFilter extends OncePerRequestFilter {
 
     @Value("${jwt.tokenHeader}")
@@ -37,15 +32,22 @@ public class JwtAuthencationTokenFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader(tokenHeader);
         // 存在token
         if (null != authHeader && authHeader.startsWith(tokenHead)) {
+
             String authToken = authHeader.substring(tokenHead.length());
             String username = jwtTokenUitl.getUserNameFromToken(authToken);
+
             // token存在用户名但未登录
             if (null != username && null == SecurityContextHolder.getContext().getAuthentication()) {
                 // 登录
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
                 if (jwtTokenUitl.ValidateToken(authToken, userDetails)) {
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    UsernamePasswordAuthenticationToken authenticationToken
+                            = new UsernamePasswordAuthenticationToken
+                            (userDetails, null, userDetails.getAuthorities());
+
+                    authenticationToken.setDetails
+                            (new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             }

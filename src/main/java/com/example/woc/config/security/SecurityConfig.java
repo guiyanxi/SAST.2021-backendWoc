@@ -1,8 +1,9 @@
-package com.zdy.yeb.config.security;
+package com.example.woc.config.security;
 
-import com.zdy.yeb.config.security.component.*;
-import com.zdy.yeb.pojo.Admin;
-import com.zdy.yeb.service.IAdminService;
+import com.example.woc.config.security.component.*;
+import com.example.woc.entity.Account;
+import com.example.woc.service.IUserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private IAdminService adminService;
+    private IUserService adminService;
     @Autowired
     private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
     @Autowired
@@ -41,10 +42,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            Admin admin = adminService.getAdminByUserName(username);
-            if (null != admin) {
-                admin.setRoles(adminService.getRoles(admin.getId()));
-                return admin;
+            Account account = adminService.getAdminByUserName(username);
+            if (null != account) {
+                account.setRoles(adminService. getRoles(account.getId()));
+                return account;
             }
             throw new UsernameNotFoundException("用户名密码不正确");
         };
@@ -94,16 +95,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/js/**",
                 "/index.html",
                 "favicon.ico",
-                "/doc.html",
+                "/doc.html",  // 接口文档
                 "/webjars/**",
                 "/swagger-resources/**",
                 "/v2/api-docs/**",
-                "/captcha"
+                "/register"
         );
     }
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
+
         auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
     }
 

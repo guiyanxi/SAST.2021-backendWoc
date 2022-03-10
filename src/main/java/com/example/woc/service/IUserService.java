@@ -1,14 +1,13 @@
 package com.example.woc.service;
 
-import com.example.woc.entity.AccountLogin;
-import com.example.woc.entity.Admin;
+import com.example.woc.entity.Account;
 import com.example.woc.entity.Role;
 import com.example.woc.model.RespBean;
 import com.baomidou.mybatisplus.extension.service.IService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public interface IAdminService extends IService<Admin> {
+public interface IUserService extends IService<Account> {
 
     /**登录之后返回token
      * @param username
@@ -22,14 +21,14 @@ public interface IAdminService extends IService<Admin> {
      * @param username
      * @return
      */
-    Admin getAdminByUserName(String username);
+    Account getAdminByUserName(String username);
 
     /**根据用户id查询角色列表
-     * @param adminId
+     * @param accountId
      * @return
      */
-    List<Role> getRoles(Integer adminId);
+    List<Role> getRoles(Integer accountId);
 
     // 注册功能
-    RespBean register(AccountLogin accountLogin);
+    RespBean register(Account account);
 }

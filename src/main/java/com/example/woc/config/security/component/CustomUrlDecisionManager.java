@@ -1,4 +1,4 @@
-package com.zdy.yeb.config.security.component;
+package com.example.woc.config.security.component;
 
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
@@ -12,11 +12,9 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 
 /**
+ *  018
  * 权限控制
  * 判断用户角色
- *
- * @author 赵德胤
- * @create 2021-04-24-21:06
  **/
 @Component
 public class CustomUrlDecisionManager implements AccessDecisionManager {

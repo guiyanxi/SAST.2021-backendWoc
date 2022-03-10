@@ -1,4 +1,4 @@
-package com.zdy.yeb.config;
+package com.example.woc.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,16 +11,9 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * swagger2 配置类
- *
- * @author 赵德胤
- * @create 2021-04-21-23:59
- **/
 @Configuration
 @EnableSwagger2
 public class Swagger2Confit {
@@ -30,7 +23,7 @@ public class Swagger2Confit {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.zdy.yeb.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.example.woc.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .securityContexts(securityContexts())
@@ -39,9 +32,9 @@ public class Swagger2Confit {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("云E办接口文档")
-                .description("")
-                .contact(new Contact("zhaody", "http:localhost:8081", "1428174641@qq.com"))
+                .title("backendWoc 接口文档")
+                .description("这个人很懒，什么都没有留下hhh")
+                .contact(new Contact("guiyan", "http:localhost:8081", "1650288155@qq.com"))
                 .version("1.0")
                 .build();
     }
@@ -69,8 +62,12 @@ public class Swagger2Confit {
     }
 
     private List<SecurityReference> defaultAuth() {
+
         List<SecurityReference> result = new ArrayList<>();
-        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+
+        AuthorizationScope authorizationScope = new AuthorizationScope
+                ("global", "accessEverything");
+
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         result.add(new SecurityReference("Authorization",authorizationScopes));

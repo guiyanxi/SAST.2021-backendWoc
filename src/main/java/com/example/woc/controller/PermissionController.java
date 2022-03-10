@@ -1,17 +1,16 @@
-package com.zdy.yeb.controller;
-// 已写好前端&接口文档，022只写了这一个板块
+package com.example.woc.controller;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.zdy.yeb.pojo.Menu;
-import com.zdy.yeb.pojo.MenuRole;
-import com.zdy.yeb.pojo.RespBean;
-import com.zdy.yeb.pojo.Role;
-import com.zdy.yeb.service.IMenuRoleService;
-import com.zdy.yeb.service.IMenuService;
-import com.zdy.yeb.service.IRoleService;
+import com.example.woc.entity.Menu;
+import com.example.woc.entity.MenuRole;
+import com.example.woc.model.RespBean;
+import com.example.woc.entity.Role;
+import com.example.woc.service.IMenuRoleService;
+import com.example.woc.service.IMenuService;
+import com.example.woc.service.IRoleService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.yaml.snakeyaml.events.Event;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,9 +22,7 @@ public class PermissionController {
 
     @Autowired
     private IRoleService roleService;
-    /*数据表字段  详见pojo/job level
-    ① id  ②职称名称  ③职称等级  ④创建时间  ⑤是否启用
-    */
+
     @Autowired
     private IMenuService menuService;
     @Autowired
@@ -40,8 +37,8 @@ public class PermissionController {
     @ApiOperation("添加角色")
     @PostMapping("/role")
     public RespBean addRole(@RequestBody Role role) {
-        if(!role.getName().startsWith("ROLE_")){
-            role.setName("ROLE_" + role.getName());  // 统一角色的前缀
+        if(!role.getUsername().startsWith("ROLE_")){
+            role.setUsername("ROLE_" + role.getUsername());  // 统一角色的前缀
         }
         if(roleService.save(role)) {
             return RespBean.success("添加成功！");

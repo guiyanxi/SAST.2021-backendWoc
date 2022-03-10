@@ -10,8 +10,10 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value = "adminLogin对象", description = "")
-public class AdminLoginParam {
+@ApiModel(value = "account 对象", description = "")
+
+public class AccountLogin {
+
     @ApiModelProperty(value = "用户名", required = true) // require 必填
     private String username;
     @ApiModelProperty(value = "密码", required = true)

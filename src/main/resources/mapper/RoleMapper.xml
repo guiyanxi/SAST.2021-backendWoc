@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.woc.mapper.RoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.woc.entity.Role">
+        <result column="username" property="username"/>
+        <result column="role" property="role"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        username, role
+    </sql>
+
+    <select id="getRoles" resultType="com.example.woc.entity.Role">
+        SELECT
+            r.username,
+            r.role
+        FROM
+            t_role r
+                LEFT JOIN t_admin_role ar ON r.role = ar.rid
+        WHERE
+            ar.account_id = #{account_id}
+    </select>
+
+
+</mapper>

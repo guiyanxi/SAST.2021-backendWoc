@@ -1,10 +1,11 @@
-package com.zdy.yeb.service.impl;
+package com.example.woc.service.impl;
 
-import com.zdy.yeb.pojo.Admin;
-import com.zdy.yeb.pojo.Menu;
-import com.zdy.yeb.mapper.MenuMapper;
-import com.zdy.yeb.service.IMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.woc.entity.Account;
+import com.example.woc.mapper.MenuMapper;
+import com.example.woc.entity.Menu;
+import com.example.woc.service.IMenuService;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,14 +15,6 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * <p>
- * 服务实现类
- * </p>
- *
- * @author zhaody
- * @since 2021-04-19
- */
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IMenuService {
 
@@ -30,6 +23,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     @Resource
     private RedisTemplate redisTemplate;
 
+
     /**
      * 根据用户id查询菜单列表
      *
@@ -37,7 +31,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
      */
     @Override
     public List<Menu> getMenusByAdminId() {
-        Integer adminId = ((Admin) SecurityContextHolder.getContext().getAuthentication()
+        Integer adminId = ((Account) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getId();
         ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
         // 从redis获取菜单数据
@@ -49,20 +43,13 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         }
         return menus;
     }
-
-    /**
-     * 根据角色获取菜单列表
-     * @return
-     */
+    //根据角色获取菜单列表
     @Override
     public List<Menu> getMenusWithRole() {
         return menuMapper.getMenusWithRole();
     }
 
-    /**
-     * 查询所有菜单
-     * @return
-     */
+    //查询所有菜单
     @Override
     public List<Menu> getAllMenus() {
         return menuMapper.getAllMenus();
